@@ -5,7 +5,7 @@ module JDistributions
 # rand(dist,n1,n2,...) --> return n1xn2x... array of samples
 # rand(dist,A) --> fill Array (multidimensional) with samples
 
-export Pareto, SymBernoulli, Delta, rand
+export Pareto, SymBernoulli, Delta, JExponential, rand
 
 ##### Pareto
 
@@ -73,6 +73,10 @@ type Delta
     c
 end
 
+function Base.copy(d::Delta)
+    Delta(d.c)
+end
+
 Base.Random.rand(rng,d::Delta) = d.c
 Base.Random.rand(d::Delta) = d.c
 
@@ -86,6 +90,43 @@ function Base.Random.rand(d::Delta, d1::Int, dims::Int... )
     rand!(d,a)
 end
 
+#### Exponential. This is in Distributions
+# But, I include it here because @parallel + Distributions are giving me hell
+
+immutable JExponential
+    θ
+end
+
+function Base.copy(d::JExponential)
+   JExponential(d.θ)
+end
+
+function Base.Random.rand(d::JExponential)
+   return - d.θ * log(1- rand())
+end
+
+# function Base.Random.rand!(d::JExponential,a)
+#     for i in 1:length(a)
+#         @inbounds a[i] = rand(d)
+#     end
+#     return a
+# end
+
+function Base.Random.rand(p::JExponential,d1::Int,dims::Int... )
+    dims = tuple(d1,dims...)
+    a = Array(Int,dims...)
+    Base.Random.rand!(p,a)
+end
+
+
+function Base.Random.rand!(p::JExponential,a)
+    for i in 1:length(a)
+        a[i] = rand(p)
+    end
+    a    
+end
+
+Base.Random.rand(p::JExponential,n::Int) = Base.Random.rand!(p,Array(typeof(p.θ),n))
 
 
 end # module
