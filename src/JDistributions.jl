@@ -6,7 +6,7 @@ module JDistributions
 # rand(dist,A) --> fill Array (multidimensional) with samples
 
 import Base.Random
-import Base: rand, rand!
+import Base: rand, rand!, median, copy
 
 export Pareto, SymBernoulli, Delta, JExponential, rand
 
@@ -30,9 +30,11 @@ immutable Pareto
     r0::Float64
 end
 
-function Base.copy(d::Pareto)
+function copy(d::Pareto)
     Pareto(d.alpha,d.r0)
 end
+
+median(d::Pareto) = d.r0 * 2.0^(1.0/d.alpha)
 
 function rand(p::Pareto)
    return p.r0 * rand()^(-one(p.alpha)/p.alpha)
