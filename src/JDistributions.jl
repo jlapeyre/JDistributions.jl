@@ -5,36 +5,51 @@ module JDistributions
 # rand(dist,n1,n2,...) --> return n1xn2x... array of samples
 # rand(dist,A) --> fill Array (multidimensional) with samples
 
+import Base.Random
+import Base: rand, rand!
+
 export Pareto, SymBernoulli, Delta, JExponential, rand
 
 ##### Pareto
+
+# Distribution
+# rho(r) = α * r0^α r^(-α-1),  for r >= r0, alpha > 0
+#          0,  otherwise
+# rho(r) has no mean for 0<α<1
 
 # Usage:
 #  p = Pareto(1.0,2.0)
 #  rand(p)
 #  rand(p,n)
 
+# I noticed lots of allocation using this in routines (depends on how it is used)
+# Adding type annotation Float64 fixed this problem.
+# Testing sums of large numbers of these now allcates 200 bytes rather than 7GB
 immutable Pareto
-    alpha
-    r0
+    alpha::Float64
+    r0::Float64
 end
 
 function Base.copy(d::Pareto)
     Pareto(d.alpha,d.r0)
 end
 
-function Base.Random.rand(p::Pareto)
-   return p.r0 * rand()^(-1/p.alpha)
+function rand(p::Pareto)
+   return p.r0 * rand()^(-one(p.alpha)/p.alpha)
 end
 
-function Base.Random.rand!(p::Pareto,a)
+# function Base.Random.rand(p::Pareto)
+#    return p.r0 * rand()^(-one(p.alpha)/p.alpha)
+# end
+
+function rand!(p::Pareto,a)
     for i in 1:length(a)
         @inbounds a[i] = rand(p)
     end
     return a
 end
 
-Base.Random.rand(p::Pareto,n::Int) = rand!(p,zeros(n))
+rand(p::Pareto,n::Int) = rand!(p,zeros(n))
 
 ##### SymBernoulli.  Symmetric Bernoulli Distribution, returns  -1 and +1 (integers) with equal probability
 
@@ -46,45 +61,45 @@ Base.Random.rand(p::Pareto,n::Int) = rand!(p,zeros(n))
 type SymBernoulli
 end
 
-function Base.Random.rand(rng,::Type{SymBernoulli})
+function rand(rng,::Type{SymBernoulli})
     2*rand(rng,Bool) - 1
 end
 
 
-function Base.Random.rand(::Type{SymBernoulli},d1::Int,dims::Int... )
+function rand(::Type{SymBernoulli},d1::Int,dims::Int... )
     dims = tuple(d1,dims...)
     a = Array(Int,dims...)
-    Base.Random.rand!(SymBernoulli,a)
+    rand!(SymBernoulli,a)
 end
 
 
-function Base.Random.rand!(::Type{SymBernoulli},a)
+function rand!(::Type{SymBernoulli},a)
     for i in 1:length(a)
         a[i] = rand(SymBernoulli)
     end
     a    
 end
 
-Base.Random.rand(::Type{SymBernoulli},n::Int) = Base.Random.rand!(SymBernoulli,Array(Int,n))
+rand(::Type{SymBernoulli},n::Int) = rand!(SymBernoulli,Array(Int,n))
 
 ##### Delta distribution returns constant value
 
 type Delta
-    c
+    c::Float64
 end
 
 function Base.copy(d::Delta)
     Delta(d.c)
 end
 
-Base.Random.rand(rng,d::Delta) = d.c
-Base.Random.rand(d::Delta) = d.c
+rand(rng,d::Delta) = d.c
+rand(d::Delta) = d.c
 
-function Base.Random.rand!(d::Delta,a)
+function rand!(d::Delta,a)
     fill!(a,d.c)
 end
 
-function Base.Random.rand(d::Delta, d1::Int, dims::Int... )
+function rand(d::Delta, d1::Int, dims::Int... )
     dims = tuple(d1,dims...)
     a = Array(typeof(d.c),dims...)
     rand!(d,a)
@@ -94,14 +109,14 @@ end
 # But, I include it here because @parallel + Distributions are giving me hell
 
 immutable JExponential
-    θ
+    θ::Float64
 end
 
 function Base.copy(d::JExponential)
    JExponential(d.θ)
 end
 
-function Base.Random.rand(d::JExponential)
+function rand(d::JExponential)
    return - d.θ * log(1- rand())
 end
 
@@ -112,21 +127,21 @@ end
 #     return a
 # end
 
-function Base.Random.rand(p::JExponential,d1::Int,dims::Int... )
+function rand(p::JExponential,d1::Int,dims::Int... )
     dims = tuple(d1,dims...)
     a = Array(Int,dims...)
-    Base.Random.rand!(p,a)
+    rand!(p,a)
 end
 
 
-function Base.Random.rand!(p::JExponential,a)
+function rand!(p::JExponential,a)
     for i in 1:length(a)
         a[i] = rand(p)
     end
     a    
 end
 
-Base.Random.rand(p::JExponential,n::Int) = Base.Random.rand!(p,Array(typeof(p.θ),n))
+rand(p::JExponential,n::Int) = rand!(p,Array(typeof(p.θ),n))
 
 
 end # module
