@@ -6,7 +6,7 @@ module JDistributions
 # rand(dist,A) --> fill Array (multidimensional) with samples
 
 import Base.Random
-import Base: rand, rand!, median, copy
+import Base: rand, rand!, median, mean, copy
 
 export Pareto, SymBernoulli, Delta, JExponential, rand
 
@@ -35,6 +35,8 @@ function copy(d::Pareto)
 end
 
 median(d::Pareto) = d.r0 * 2.0^(1.0/d.alpha)
+
+mean(d::Pareto) = d.alpha < 1.0 ? Inf : d.alpha/(d.alpha-1) * d.r0
 
 function rand(p::Pareto)
    return p.r0 * rand()^(-one(p.alpha)/p.alpha)
