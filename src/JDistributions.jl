@@ -40,7 +40,6 @@ mean(d::Pareto) = d.alpha < 1.0 ? Inf : d.alpha/(d.alpha-1) * d.r0
 
 rand(p::Pareto) = p.r0 * rand()^(-one(p.alpha)/p.alpha)
 
-
 function rand!(p::Pareto,a)
     for i in 1:length(a)
         @inbounds a[i] = rand(p)
@@ -62,6 +61,7 @@ end
 
 rand(rng,::Type{SymBernoulli}) =  2*rand(rng,Bool) - 1
 rand(::Type{SymBernoulli}) =  2*rand(Bool) - 1
+mean(::Type{SymBernoulli}) =  0
 
 function rand(::Type{SymBernoulli},d1::Int,dims::Int... )
     dims = tuple(d1,dims...)
@@ -69,10 +69,9 @@ function rand(::Type{SymBernoulli},d1::Int,dims::Int... )
     rand!(SymBernoulli,a)
 end
 
-
 function rand!(::Type{SymBernoulli},a)
     for i in 1:length(a)
-        a[i] = rand(SymBernoulli)
+        @inbounds  a[i] = rand(SymBernoulli)
     end
     a    
 end
@@ -81,8 +80,8 @@ rand(::Type{SymBernoulli},n::Int) = rand!(SymBernoulli,Array(Int,n))
 
 ##### Delta distribution returns constant value
 
-type Delta
-    c::Float64
+type Delta{T}
+    c::T
 end
 
 function Base.copy(d::Delta)
@@ -109,20 +108,9 @@ immutable JExponential
     θ::Float64
 end
 
-function Base.copy(d::JExponential)
-   JExponential(d.θ)
-end
-
-function rand(d::JExponential)
-   return - d.θ * log(1- rand())
-end
-
-# function Base.Random.rand!(d::JExponential,a)
-#     for i in 1:length(a)
-#         @inbounds a[i] = rand(d)
-#     end
-#     return a
-# end
+copy(d::JExponential) = JExponential(d.θ)
+rand(d::JExponential) = - d.θ * log(1- rand())
+mean(d::JExponential) = d.θ
 
 function rand(p::JExponential,d1::Int,dims::Int... )
     dims = tuple(d1,dims...)
@@ -130,10 +118,9 @@ function rand(p::JExponential,d1::Int,dims::Int... )
     rand!(p,a)
 end
 
-
 function rand!(p::JExponential,a)
     for i in 1:length(a)
-        a[i] = rand(p)
+        @inbounds a[i] = rand(p)
     end
     a    
 end
