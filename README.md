@@ -3,7 +3,7 @@
 This package contains some probability distributions.
 It is intended for private use. It exists because
 
-1. It was written before precompilation when the official `Distributions` packages took
+1. It was written before precompilation, when the official `Distributions` packages took
 an eternity to load.
 2. It has distributions that are not (or at one time were not) included in
    `Distributions`.
