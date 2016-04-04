@@ -30,21 +30,16 @@ immutable Pareto
     r0::Float64
 end
 
-function copy(d::Pareto)
-    Pareto(d.alpha,d.r0)
-end
+Pareto(alpha) = Pareto(alpha,1.0)
+
+copy(d::Pareto) = Pareto(d.alpha,d.r0)
 
 median(d::Pareto) = d.r0 * 2.0^(1.0/d.alpha)
 
 mean(d::Pareto) = d.alpha < 1.0 ? Inf : d.alpha/(d.alpha-1) * d.r0
 
-function rand(p::Pareto)
-   return p.r0 * rand()^(-one(p.alpha)/p.alpha)
-end
+rand(p::Pareto) = p.r0 * rand()^(-one(p.alpha)/p.alpha)
 
-# function Base.Random.rand(p::Pareto)
-#    return p.r0 * rand()^(-one(p.alpha)/p.alpha)
-# end
 
 function rand!(p::Pareto,a)
     for i in 1:length(a)
@@ -65,10 +60,7 @@ rand(p::Pareto,n::Int) = rand!(p,zeros(n))
 type SymBernoulli
 end
 
-function rand(rng,::Type{SymBernoulli})
-    2*rand(rng,Bool) - 1
-end
-
+rand(rng,::Type{SymBernoulli}) =  2*rand(rng,Bool) - 1
 
 function rand(::Type{SymBernoulli},d1::Int,dims::Int... )
     dims = tuple(d1,dims...)
