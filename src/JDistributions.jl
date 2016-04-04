@@ -55,12 +55,13 @@ rand(p::Pareto,n::Int) = rand!(p,zeros(n))
 # Usage:
 # rand(SymBernoulli)    # return one sample
 # rand(SymBernoulli,n)  # return n samples
-# rand(SymBernoulli,A)  # fill array A with samples
+# rand!(SymBernoulli,A)  # fill array A with samples
 
 type SymBernoulli
 end
 
 rand(rng,::Type{SymBernoulli}) =  2*rand(rng,Bool) - 1
+rand(::Type{SymBernoulli}) =  2*rand(Bool) - 1
 
 function rand(::Type{SymBernoulli},d1::Int,dims::Int... )
     dims = tuple(d1,dims...)
