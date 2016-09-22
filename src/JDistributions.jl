@@ -1,4 +1,5 @@
 module JDistributions
+using Distributions
 
 # These distributions should work like the following:
 # rand(dist)  --> one sample
@@ -8,7 +9,11 @@ module JDistributions
 import Base.Random
 import Base: rand, rand!, median, mean, copy
 
-export Pareto, SymBernoulli, Delta, JExponential, rand
+export Pareto, SymBernoulli, Delta, JExponential, TwoPoint
+
+export rand, params, partype
+
+include("twopoint.jl")
 
 ##### Pareto
 
@@ -25,7 +30,7 @@ export Pareto, SymBernoulli, Delta, JExponential, rand
 # I noticed lots of allocation using this in routines (depends on how it is used)
 # Adding type annotation Float64 fixed this problem.
 # Testing sums of large numbers of these now allcates 200 bytes rather than 7GB
-immutable Pareto
+immutable Pareto <: ContinuousUnivariateDistribution
     alpha::Float64
     r0::Float64
 end
@@ -40,14 +45,15 @@ mean(d::Pareto) = d.alpha < 1.0 ? Inf : d.alpha/(d.alpha-1) * d.r0
 
 rand(p::Pareto) = p.r0 * rand()^(-one(p.alpha)/p.alpha)
 
-function rand!(p::Pareto,a)
-    for i in 1:length(a)
-        @inbounds a[i] = rand(p)
-    end
-    return a
-end
+# Not needed because we are subtyping from Distributions
+# function rand!(p::Pareto,a)
+#     for i in 1:length(a)
+#         @inbounds a[i] = rand(p)
+#     end
+#     return a
+# end
 
-rand(p::Pareto,n::Int) = rand!(p,zeros(n))
+# rand(p::Pareto,n::Int) = rand!(p,zeros(n))
 
 ##### SymBernoulli.  Symmetric Bernoulli Distribution, returns  -1 and +1 (integers) with equal probability
 
@@ -56,7 +62,7 @@ rand(p::Pareto,n::Int) = rand!(p,zeros(n))
 # rand(SymBernoulli,n)  # return n samples
 # rand!(SymBernoulli,A)  # fill array A with samples
 
-type SymBernoulli
+immutable SymBernoulli <: Distribution
 end
 
 rand(rng,::Type{SymBernoulli}) =  2*rand(rng,Bool) - 1
@@ -80,7 +86,7 @@ rand(::Type{SymBernoulli},n::Int) = rand!(SymBernoulli,Array(Int,n))
 
 ##### Delta distribution returns constant value
 
-type Delta{T}
+immutable Delta{T} <: Distribution
     c::T
 end
 
@@ -104,7 +110,7 @@ end
 #### Exponential. This is in Distributions
 # But, I include it here because @parallel + Distributions are giving me hell
 
-immutable JExponential
+immutable JExponential <: Distribution
     θ::Float64
 end
 
