@@ -1,7 +1,8 @@
 doc"""
     TwoPoint(p,v1,v2)
 
-    The Two point distribution has mass concentrated on two points.
+    The Two point distribution has mass concentrated on two points. The
+    value `v1` is returned with probability `p` and the second with probability `(1-p)`.
 """
 
 immutable TwoPoint{T<:Real,V} <: DiscreteUnivariateDistribution
@@ -12,27 +13,13 @@ end
 
 TwoPoint(p::Integer,v1,v2) = TwoPoint(Float64(p),v1,v2)
 
-# @distr_support Bernoulli 0 1
+#### Sampling
 
-#### Conversions
-# convert{T<:Real}(::Type{Bernoulli{T}}, p::Real) = Bernoulli(T(p))
-# convert{T <: Real, S <: Real}(::Type{Bernoulli{T}}, d::Bernoulli{S}) = Bernoulli(T(d.p))
+rand(d::TwoPoint) = rand() < d.p ? d.v1 : d.v2
 
 #### Parameters
-
-# succprob(d::TwoPoint) = d.p
-# failprob(d::TwoPoint) = 1 - d.p
 
 params(d::TwoPoint) = (d.p,d.v1,d.v2)
 
 @inline partype{T<:Real,V}(d::TwoPoint{T,V}) = (T,V)
 
-#### Sampling
-
-function rand(d::TwoPoint)
-    if rand() < d.p
-        d.v1
-    else
-        d.v2
-    end
-end
