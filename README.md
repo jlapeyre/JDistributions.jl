@@ -4,7 +4,11 @@ This package contains some probability distributions. Some are not
 available in `Distributions`. Some are here for historical reasons.
 
 Below is a brief description of some distributions.
-See the source code and doc strings for other distributions.
+See the doc strings for more descriptions.
+
+### InverseExponential
+
+### TwoPoint
 
 ### SymBernoulli (fair coin)
 

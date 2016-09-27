@@ -12,3 +12,7 @@ using Base.Test
 @test (rand(SymBernoulli()); true)
 
 @test (rand(TwoPoint(.5,1,2)); true)
+
+@test (rand(InverseExponential()); true)
+
+@test params(InverseExponential(2.0)) == (2.0,)
