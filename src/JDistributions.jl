@@ -4,9 +4,11 @@ using Distributions
 import Base.Random
 import Base: rand, rand!, median, mean
 
+import Distributions: support
+
 export Pareto, SymBernoulli, Delta, JExponential, TwoPoint, InverseExponential
 
-export rand, params, partype
+export rand, params, partype, moment, support
 
 include("pareto.jl")
 include("twopoint.jl")

@@ -23,6 +23,8 @@ InverseExponential{T<:Real}(a::T) = InverseExponential(Float64(a))
 
 InverseExponential()  = InverseExponential(1.0)
 
+support(d::Union{InverseExponential,Type{InverseExponential}}) = RealInterval(0.0,Inf)
+
 #### Sampling
 
 function rand(d::InverseExponential)

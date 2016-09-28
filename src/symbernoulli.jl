@@ -1,18 +1,23 @@
 doc"""
-   SymBernoulli()
+    SymBernoulli()
 
-   The *symmetric Bernoulli distribution*, has mass concetrated on -1 and +1 (integers) with equal probability.
+The *symmetric Bernoulli distribution*, has mass concetrated on -1 and +1 (integers) with equal probability.
 """
 
 immutable SymBernoulli <: DiscreteUnivariateDistribution
 end
 
+SymB = Union{SymBernoulli,Type{SymBernoulli}}
+
 #### Sampling
 
-rand(::Type{SymBernoulli}) =  2*rand(Bool) - 1
-rand(d::SymBernoulli) =  2*rand(Bool) - 1
+rand(d::SymB)  =  2*rand(Bool) - 1
 
 #### Statistics
 
-mean(::Type{SymBernoulli}) =  0
-mean(d::SymBernoulli) =  0
+mean(d::SymB) =  0
+
+moment(d::SymB, k::Integer) = iseven(k) ? 2 : 0
+
+moment(d::SymB, k::Number) = (Complex(0.0,-1.0))^k
+
