@@ -36,6 +36,13 @@ end
 
 params(d::InverseExponential) = (d.ed.θ,)
 
+#### Statistics
+
+function moment(d::InverseExponential, k::Float64)
+    k  >= 1 && throw(DomainError())
+    d.ed.θ^k * gamma(1-k)
+end
+
 #### Display
 
 function Base.show(io::IO, d::InverseExponential)
