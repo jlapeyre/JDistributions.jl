@@ -1,5 +1,5 @@
 doc"""
-   InverseExponential(θ)
+    InverseExponential(θ)
 
 A random variable `X` has the *inverse exponential distribution* with
 parameter `θ` if `Y = 1/X` has the `Exponential distribution` with parameter `θ`.
@@ -11,7 +11,6 @@ params(d)              # get the parameter (`θ`,).
 ```
 
 The inverse exponential distribution has no mean.
-
 """
 
 immutable InverseExponential <: ContinuousUnivariateDistribution
@@ -34,3 +33,14 @@ end
 #### Parameters
 
 params(d::InverseExponential) = (d.ed.θ,)
+
+#### Display
+
+function Base.show(io::IO, d::InverseExponential)
+    print(io, Distributions.distrname(d))
+    print(io, '(')
+    print(io, 'θ')
+    print(io, '=')
+    show(io, d.ed.θ)
+    print(io, ')')
+end
