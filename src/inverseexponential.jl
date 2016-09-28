@@ -14,10 +14,11 @@ The inverse exponential distribution has no mean.
 """
 
 immutable InverseExponential <: ContinuousUnivariateDistribution
+    θ::Float64
     ed::Exponential
 end
 
-InverseExponential(a::Float64)  = InverseExponential(Exponential(a))
+InverseExponential(a::Float64)  = InverseExponential(a,Exponential(a))
 
 InverseExponential{T<:Real}(a::T) = InverseExponential(Float64(a))
 
@@ -45,11 +46,4 @@ end
 
 #### Display
 
-function Base.show(io::IO, d::InverseExponential)
-    print(io, Distributions.distrname(d))
-    print(io, '(')
-    print(io, 'θ')
-    print(io, '=')
-    show(io, d.ed.θ)
-    print(io, ')')
-end
+Base.show(io::IO, d::InverseExponential) = _show_all_but_last(io,d)

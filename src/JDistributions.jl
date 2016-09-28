@@ -6,7 +6,7 @@ import Base: rand, rand!, median, mean
 
 import Distributions: support
 
-export Pareto, SymBernoulli, Delta, JExponential, TwoPoint, InverseExponential
+export Pareto, SymBernoulli, Delta, JExponential, TwoPoint, InverseExponential, GeneralizedGamma
 
 export rand, params, partype, moment, support
 
@@ -15,6 +15,15 @@ include("twopoint.jl")
 include("delta.jl")
 include("symbernoulli.jl")
 include("inverseexponential.jl")
+include("gengamma.jl")
+
+#### Display
+
+# Don't show the internal distribution for some functions, only the parameters
+function _show_all_but_last(io::IO, d)
+    params = fieldnames(d)[1:end-1]
+    Distributions.show(io,d,params)
+end
 
 #### Exponential. This is in Distributions
 # But, I include it here because @parallel + Distributions are giving me hell

@@ -16,3 +16,5 @@ using Base.Test
 @test (rand(InverseExponential()); true)
 
 @test params(InverseExponential(2.0)) == (2.0,)
+
+@test (rand(GeneralizedGamma()); true)
