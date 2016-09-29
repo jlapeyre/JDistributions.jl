@@ -4,7 +4,7 @@ using Distributions
 import Base.Random
 import Base: rand, rand!, median, mean
 
-import Distributions: support
+import Distributions: support, moment, params, partype
 
 export Pareto, SymBernoulli, Delta, JExponential, TwoPoint, InverseExponential, GeneralizedGamma
 

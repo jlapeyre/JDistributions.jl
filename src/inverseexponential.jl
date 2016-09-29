@@ -44,6 +44,8 @@ function moment(d::InverseExponential, k::Float64)
     d.ed.θ^k * gamma(1-k)
 end
 
+mean(d::InverseExponential) = Inf
+
 #### Display
 
 Base.show(io::IO, d::InverseExponential) = _show_all_but_last(io,d)
