@@ -17,7 +17,7 @@ v2: dog
 immutable TwoPoint{V} <: DiscreteUnivariateDistribution
     p::Float64  # probability of getting first value
     v1::V # value returned with probability p
-    v2::V # value returned with probability 1-p    
+    v2::V # value returned with probability 1-p
 end
 
 TwoPoint(p::Integer,v1,v2) = TwoPoint(Float64(p),v1,v2)

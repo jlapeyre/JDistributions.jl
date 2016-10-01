@@ -4,7 +4,7 @@ doc"""
   The Pareto distribution has probability density function
 
   f(x) = α * x0^α x^(-α-1), for x >= x0, alpha > 0
-  0                       , otherwise 
+  0                       , otherwise
 """
 
 immutable Pareto <: ContinuousUnivariateDistribution
