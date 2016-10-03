@@ -18,3 +18,11 @@ using Base.Test
 @test params(InverseExponential(2.0)) == (2.0,)
 
 @test (rand(GeneralizedGamma()); true)
+
+@test (rand(JExponential()); true)
+
+if Int != Int32
+    @test_approx_eq mean(JExponential()) 1.0
+else
+    @test_approx_eq_eps mean(JExponential()) 1.0 1e-9
+end

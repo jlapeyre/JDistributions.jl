@@ -32,6 +32,8 @@ immutable JExponential <: ContinuousUnivariateDistribution
     θ::Float64
 end
 
+JExponential() = JExponential(1.0)
+
 rand(d::JExponential) = - d.θ * log(1- rand())
 mean(d::JExponential) = d.θ
 
