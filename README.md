@@ -3,7 +3,7 @@
 
 Linux, OSX: [![Build Status](https://travis-ci.org/jlapeyre/JDistributions.jl.svg)](https://travis-ci.org/jlapeyre/JDistributions.jl)
 
-[![Coverage Status](https://coveralls.io/repos/jlapeyre/JDistributions.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/jlapeyre/JDistributions.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/jlapeyre/JDistributions.jl/badge.svg)](https://coveralls.io/github/jlapeyre/JDistributions.jl)
 [![codecov.io](http://codecov.io/github/jlapeyre/JDistributions.jl/coverage.svg?branch=master)](http://codecov.io/github/jlapeyre/JDistributions.jl?branch=master)
 
 See the doc strings for more descriptions.
