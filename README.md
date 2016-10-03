@@ -1,10 +1,14 @@
 # JDistributions
+### Some probability distributions that are not in `Distributions.jl`
 
-This package contains some probability distributions. Some are not
-available in `Distributions`. Some are here for historical reasons.
+Linux, OSX: [![Build Status](https://travis-ci.org/jlapeyre/JDistributions.jl.svg)](https://travis-ci.org/jlapeyre/JDistributions.jl)
 
-Below is a brief description of some distributions.
+[![Coverage Status](https://coveralls.io/repos/jlapeyre/JDistributions.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/jlapeyre/JDistributions.jl?branch=master)
+[![codecov.io](http://codecov.io/github/jlapeyre/JDistributions.jl/coverage.svg?branch=master)](http://codecov.io/github/jlapeyre/JDistributions.jl?branch=master)
+
 See the doc strings for more descriptions.
+
+### GeneralizedGamma
 
 ### InverseExponential
 
@@ -30,5 +34,3 @@ Delta("dog")
 
 Same as Distributions.Exponential, but the copy constructor
 works with `@parallel`. (maybe we should have tried deepcopy ?)
-
-
