@@ -2,7 +2,6 @@
 ### Some probability distributions that are not in `Distributions.jl`
 
 Linux, OSX: [![Build Status](https://travis-ci.org/jlapeyre/JDistributions.jl.svg)](https://travis-ci.org/jlapeyre/JDistributions.jl)
-
 [![Coverage Status](https://coveralls.io/repos/github/jlapeyre/JDistributions.jl/badge.svg)](https://coveralls.io/github/jlapeyre/JDistributions.jl)
 [![codecov.io](http://codecov.io/github/jlapeyre/JDistributions.jl/coverage.svg?branch=master)](http://codecov.io/github/jlapeyre/JDistributions.jl?branch=master)
 
