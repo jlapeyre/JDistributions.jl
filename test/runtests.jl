@@ -11,6 +11,10 @@ using Base.Test
 @test (rand(SymBernoulli); true)
 @test (rand(SymBernoulli()); true)
 
+@test mean(SymBernoulli()) == 0
+@test moment(SymBernoulli(),1) == 0
+@test moment(SymBernoulli(),2) == 1
+
 @test (rand(TwoPoint(.5,1,2)); true)
 
 @test (rand(InverseExponential()); true)

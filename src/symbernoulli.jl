@@ -13,11 +13,13 @@ SymB = Union{SymBernoulli,Type{SymBernoulli}}
 
 rand(d::SymB)  =  2*rand(Bool) - 1
 
+#rand(DataType::SymBernoulli, dims::Int64...)  =  rand(SymBernoulli(),dims...)
+
 #### Statistics
 
 mean(d::SymB) =  0
 
-moment(d::SymB, k::Integer) = iseven(k) ? 2 : 0
+moment(d::SymB, k::Integer) = iseven(k) ? one(k) : zero(k)
 
-moment(d::SymB, k::Number) = (Complex(0.0,-1.0))^k
+moment(d::SymB, k::Number) = (1^k + Complex(-float(one(k)), zero(k))^k) * 1//2
 
